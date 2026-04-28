@@ -1,14 +1,17 @@
 
-import Home from "./pages/home";
+import Navbar from './components/Navbar/navbar';
+import Deposit from "./pages/deposit";
+import Withdraw from "./pages/withdraw";
 import Transactions from "./pages/transactions";
 
 function App() {
-  return <Transactions />;
-  return <Home />;
-  
-  
- 
-  
+  return (
+    <div>
+      <Navbar />     
+      {/* <Deposit />*/}
+      {/*<Withdraw />*/}
+    </div>
+  );
 }
 
-export default App;
+export default App
