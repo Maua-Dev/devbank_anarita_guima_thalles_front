@@ -1,8 +1,5 @@
 
-import Navbar from './components/Navbar/navbar';
-import Deposit from "./pages/deposit";
-import Withdraw from "./pages/withdraw";
-import Transactions from "./pages/transactions";
+import Navbar from './components/Nav/navbar';
 
 function App() {
   return (

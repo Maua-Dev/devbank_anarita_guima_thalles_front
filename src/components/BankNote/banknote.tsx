@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Note = ({ noteValue, quantity, onAdd, onRemove }) => (
+interface NoteProps {
+    noteValue: string;
+    quantity: number;
+    onAdd?: () => void;
+    onRemove?: () => void;
+}
+
+const Note: React.FC<NoteProps> = ({ noteValue, quantity, onAdd, onRemove }) => (
     <div className="flex flex-col items-center w-full">
     
         <div className="w-full h-56 bg-[#7EB9F2] rounded-2xl border-[16px] border-solid border-[#C6DDF3] flex items-center justify-center shadow-sm">

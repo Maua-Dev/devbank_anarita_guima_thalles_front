@@ -3,7 +3,7 @@ import Note from '../components/BankNote/banknote'
 
 export default function Withdraw() {
 
-    const [requestDaImagem, setRequestDaImagem] = useState({
+    const [requestDaImagem] = useState({
         "2": 0,
         "5": 0,
         "10": 0,
