@@ -1,8 +1,8 @@
 export default function Home() {
     return (
         <div className = "min-h-screen white flex items-center justify-center" >
-            <div className="bg-blue-200 p-40 rounded-lg shadow-lg w-[2000px]">
-                <h1 className="text-9xl font-bold text-white text-center mb-40">
+            <div className="bg-blue-200 p-40 rounded-lg w-[2000px]">
+                <h1 className=" font-bold text-white text-center mb-60 text-8xl">
                 DEV {" "}
                 <span className="text-red-300 [text-shadow:0_0_10px_#3b82f6,0_0_20px_#3b82f6]">
                 BANK
