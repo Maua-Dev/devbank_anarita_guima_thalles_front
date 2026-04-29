@@ -21,7 +21,7 @@ export default function Transactions() {
       </div>
       <div className="mt-4 space-y-4">
 
-        {[1, 2, 3,].map((item) => (  
+        {[1, 2, 3].map((item) => (  
           <div
             key={item}
             className="bg-blue-300 rounded-md px-6 py-6 text-blue-700">
@@ -34,8 +34,8 @@ export default function Transactions() {
                 </div>
         ))}
 
-        <div className="flex justify-center mt-6 w-full mt-6 bg-blue-700 rounded-md py-10 ">
-             <button className="text-4xl text-white font-medium text-center  ">
+        <div className="flex justify-center mt-6 w-1/6 mx-auto mt-6 bg-blue-700 rounded-md py-10 hover:scale-105 active:scale-95 transition-all group">
+             <button className="text-4xl text-white font-medium text-center">
                 Voltar
             </button>
 
