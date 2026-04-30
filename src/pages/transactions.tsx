@@ -1,5 +1,12 @@
+
+
+import Navbar from '../components/Nav/navbar';
+
 export default function Transactions() {
     return (
+        <>
+            <Navbar />
+
 <div className="min-h-screen bg-blue-100 p-4"> 
       <div className="bg-blue-600 rounded-md px-8 py-6 flex justify-between items-start"> 
         <h1 className="text-6xl font-bold text-white"> 
@@ -42,5 +49,6 @@ export default function Transactions() {
           </div>
         </div>
       </div>
+        </>
     );
 }

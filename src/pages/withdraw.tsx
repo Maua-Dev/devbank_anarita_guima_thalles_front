@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Note from '../components/BankNote/banknote'
+import Navbar from '../components/Nav/navbar'
 
 export default function Withdraw() {
 
@@ -16,6 +17,8 @@ export default function Withdraw() {
 
 
     return (
+        <>
+            <Navbar />
         <div className="p-5 bg-gray-50 min-h-screen">
             <div className="flex flex-row bg-[#B5D7F8] w-full h-18 rounded-2xl mb-5 gap-5 justify-center items-center p-5 ">
                 <div className="basis-1/3 text-white font-bold bg-[#7EB9F2] p-5 rounded-2xl">Quantidade a sacar : </div>
@@ -37,5 +40,6 @@ export default function Withdraw() {
  
 
         </div>
+        </>
     );
 }
