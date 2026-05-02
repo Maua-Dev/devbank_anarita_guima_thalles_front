@@ -1,7 +1,7 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import Note from '../components/BankNote/banknote'
 import Navbar from '../components/Nav/navbar'
-import { deposit } from '../services/api'
+import { deposit, getAccount } from '../services/api'
 import { ApiContext } from '../context/ApiContext'
 import { useNavigate } from "react-router-dom"
 
@@ -9,6 +9,11 @@ export default function Deposit() {
 
     const navigate = useNavigate();
     const { apiUrl } = useContext(ApiContext);
+    const [balance, setBalance] = useState(0);
+
+    useEffect(() => {
+        getAccount(apiUrl).then(data => setBalance(data.balance)).catch(() => setBalance(0));
+    }, [apiUrl]);
     const [requestDaImagem, setRequestDaImagem] = useState({
         "2": 0,
         "5": 0,
@@ -57,9 +62,9 @@ export default function Deposit() {
             <Navbar />
         <div className="p-5 bg-gray-50 min-h-screen">
             <div className="flex flex-row bg-[#B5D7F8] w-full h-18 rounded-2xl mb-5 gap-5 justify-center items-center p-5 ">
-                <div className="basis-1/3 text-white font-bold bg-[#7EB9F2] p-5 rounded-2xl">Quantidade a depositar : </div>
-                <div className="basis-1/3 text-white font-bold">Saldo Disponivel : </div>
-                <div className="basis-1/3 text-white font-bold">Saldo Resultante : </div>
+                <div className="basis-1/3 text-white font-bold bg-[#7EB9F2] p-5 rounded-2xl">Quantidade a depositar : R$ {calcularTotal()}</div>
+                <div className="basis-1/3 text-white font-bold">Saldo Disponivel : R$ {balance}</div>
+                <div className="basis-1/3 text-white font-bold">Saldo Resultante : R$ {balance + calcularTotal()}</div>
             </div>
 
 
