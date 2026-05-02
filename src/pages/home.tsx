@@ -47,7 +47,7 @@ export default function Home() {
             </Link>
 
             <Link to="/transactions"className="flex-1 bg-blue-300 rounded-2xl py-20 flex flex-col items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all group">
-                <span className="text-white text-3xl font-bold">Transferir</span>
+                <span className="text-white text-3xl font-bold">Ver Transações</span>
             </Link>
         </div>
 
