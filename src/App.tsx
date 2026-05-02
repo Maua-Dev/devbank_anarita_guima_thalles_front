@@ -1,4 +1,3 @@
-import Navbar from './components/Nav/navbar';
 import Home from './pages/home';
 import Transactions from './pages/transactions';
 import Deposit from './pages/deposit';
