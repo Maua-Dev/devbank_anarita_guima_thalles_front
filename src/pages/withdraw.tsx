@@ -1,8 +1,14 @@
 import { useState } from "react"
 import Note from '../components/BankNote/banknote'
 import Navbar from '../components/Nav/navbar'
+import { useNavigate } from "react-router-dom"
 
 export default function Withdraw() {
+    const navigate = useNavigate();
+
+    function handleWithdraw() {
+        alert("saque");
+    }
 
     const [requestDaImagem] = useState({
         "2": 0,
@@ -37,7 +43,21 @@ export default function Withdraw() {
                 ))}
             </div>
 
- 
+            <div className="flex justify-center gap-10 mt-10">
+            <button
+                onClick={() => navigate("/")}
+                className="bg-blue-500 text-white px-10 py-3 rounded-md font-bold hover:scale-105 active:scale-95"
+            >
+                Voltar
+            </button>
+
+            <button
+                onClick={handleWithdraw}
+                className="bg-blue-700 text-white px-10 py-3 rounded-md font-bold hover:scale-105 active:scale-95"
+            >
+                Sacar
+            </button>
+            </div>
 
         </div>
         </>

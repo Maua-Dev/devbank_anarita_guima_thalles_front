@@ -1,7 +1,7 @@
 import logo from '../../assets/logo.svg';
 import user from '../../assets/user.svg';
 
-function Navbar({ userInfo = { name: "GuiGuerreiro", agency: "0069", acnumber: "12345-6" } }) {
+function Navbar({ userInfo = { name: "GuiGuerreiro", agency: "0068", acnumber: "12345-6" } }) {
     return (
         <nav className="bg-[#0073E6] w-full h-24">
             <div className="flex items-center justify-between  mx-auto h-20">
