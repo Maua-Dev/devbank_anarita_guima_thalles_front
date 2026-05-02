@@ -1,7 +1,22 @@
 import Navbar from '../components/Nav/navbar';
 import { Link } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { ApiContext } from '../context/ApiContext';
+import { getAccount } from '../services/api';
 
 export default function Home() {
+  const { apiUrl, setApiUrl } = useContext(ApiContext);
+  const [balance, setBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!apiUrl) {
+      setBalance(null);
+      return;
+    }
+    getAccount(apiUrl)
+      .then((data) => setBalance(data.current_balance))
+      .catch(() => setBalance(null));
+  }, [apiUrl]);
   return (
     <>
       <Navbar />
@@ -17,7 +32,7 @@ export default function Home() {
             <span className="text-blue-600">fazer</span>?
           </div>
           <div className="bg-blue-400 rounded-md px-25 py-7 text-white text-xl font-bold">
-            Saldo Atual: 000
+            Saldo Atual: {balance !== null ? `R$ ${balance}` : "---"}
           </div>
         </div>
 
@@ -36,11 +51,13 @@ export default function Home() {
             </Link>
         </div>
 
-        {/* Input da API */}
+
         <input
           type="text"
           placeholder="Coloque aqui o endpoint da sua API"
           className="flex justify-center gap-20 w-11/12 mx-auto mt-12 bg-blue-300 rounded-md active:scale-95 p-8 text-black font-bold text-xl placeholder:text-black placeholder:font-bold placeholder:text-xl"
+          value={apiUrl}
+          onChange={(e) => setApiUrl(e.target.value)}
         />
       </div>
     </>
