@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react"
 import Note from '../components/BankNote/banknote'
 import Navbar from '../components/Nav/navbar'
-import { deposit, getAccount } from '../services/api'
+import { getAccount } from '../services/api'
 import { ApiContext } from '../context/ApiContext'
 import { useNavigate } from "react-router-dom"
 
@@ -12,7 +12,8 @@ export default function Deposit() {
     const [balance, setBalance] = useState(0);
 
     useEffect(() => {
-        getAccount(apiUrl).then(data => setBalance(data.balance)).catch(() => setBalance(0));
+        if (!apiUrl) return;
+        getAccount(apiUrl).then(data => setBalance(data.current_balance)).catch(() => setBalance(0));
     }, [apiUrl]);
     const [requestDaImagem, setRequestDaImagem] = useState({
         "2": 0,
@@ -40,20 +41,42 @@ export default function Deposit() {
     }
 
     async function handleDeposit() {
-    const total = calcularTotal();
+        const total = calcularTotal();
 
-    if (total <= 0) {
-        alert("Selecione ao menos uma nota");
-        return;
-    }
+        if (total <= 0) {
+            alert("Selecione ao menos uma nota");
+            return;
+        }
 
-    try {
-        await deposit(apiUrl, total);
-        alert("Depósito realizado com sucesso!");
-        navigate("/");
-    } catch {
-        alert("Erro ao depositar");
-    }
+        const payload: Record<string, number> = {};
+        Object.entries(requestDaImagem).forEach(([valor, qtd]) => {
+            if (qtd > 0) {
+                payload[valor] = qtd;
+            }
+        });
+
+        try {
+            const response = await fetch(`${apiUrl}/deposit`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.status === 403) {
+                const errorText = await response.text();
+                alert(errorText || "Depósito suspeito");
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("Erro ao depositar");
+            }
+
+            alert("Depósito realizado com sucesso!");
+            navigate("/");
+        } catch {
+            alert("Erro ao depositar");
+        }
     }
 
 

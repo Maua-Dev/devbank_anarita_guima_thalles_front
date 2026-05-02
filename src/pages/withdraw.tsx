@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react"
 import Note from '../components/BankNote/banknote'
 import Navbar from '../components/Nav/navbar'
 import { useNavigate } from "react-router-dom"
-import { withdraw, getAccount } from '../services/api'
+import { getAccount } from '../services/api'
 import { ApiContext } from '../context/ApiContext'
 
 export default function Withdraw() {
@@ -11,7 +11,8 @@ export default function Withdraw() {
     const [balance, setBalance] = useState(0);
 
     useEffect(() => {
-        getAccount(apiUrl).then(data => setBalance(data.balance)).catch(() => setBalance(0));
+        if (!apiUrl) return;
+        getAccount(apiUrl).then(data => setBalance(data.current_balance)).catch(() => setBalance(0));
     }, [apiUrl]);
 
     const [requestDaImagem, setRequestDaImagem] = useState({
@@ -47,13 +48,30 @@ export default function Withdraw() {
             return;
         }
 
-        if (total > balance) {
-            alert("Saldo insuficiente");
-            return;
-        }
+        const payload: Record<string, number> = {};
+        Object.entries(requestDaImagem).forEach(([valor, qtd]) => {
+            if (qtd > 0) {
+                payload[valor] = qtd;
+            }
+        });
 
         try {
-            await withdraw(apiUrl, total);
+            const response = await fetch(`${apiUrl}/withdraw`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.status === 403) {
+                const errorText = await response.text();
+                alert(errorText || "Saldo insuficiente para transação");
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("Erro ao sacar");
+            }
+
             alert("Saque realizado com sucesso!");
             navigate("/");
         } catch {
