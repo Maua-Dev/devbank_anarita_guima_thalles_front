@@ -1,9 +1,12 @@
 export type AccountResponse = {
-  balance: number;
+  name: string;
+  agency: string;
+  account: string;
+  current_balance: number;
 };
 
 //validação da url da api
-export async function getAccount(apiUrl: string): Promise<{ balance: number }> {
+export async function getAccount(apiUrl: string): Promise<AccountResponse> {
     const response = await fetch(`${apiUrl}`);
     if(!response.ok) throw new Error("Desculpe! Ocorreu um erro ao buscar a conta!");
     return response.json();
@@ -32,7 +35,7 @@ export async function withdraw(apiUrl: string, value: number): Promise<void> {
 }
 
 //buscar histórico
-export async function getHistory(apiUrl: string): Promise<any[]> {
+export async function getHistory(apiUrl: string): Promise<{all_transactions: any[]}> {
   const response = await fetch(`${apiUrl}/history`);
   if (!response.ok) throw new Error("Desculpe! Ocorreu um erro ao buscar histórico!");
   return response.json();
