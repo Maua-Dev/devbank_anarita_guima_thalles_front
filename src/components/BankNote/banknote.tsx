@@ -5,9 +5,10 @@ interface NoteProps {
     quantity: number;
     onAdd?: () => void;
     onRemove?: () => void;
+    onChangeQuantity?: (qtd: number) => void;
 }
 
-const Note: React.FC<NoteProps> = ({ noteValue, quantity, onAdd, onRemove }) => (
+const Note: React.FC<NoteProps> = ({ noteValue, quantity, onAdd, onRemove, onChangeQuantity }) => (
     <div className="flex flex-col items-center w-full">
     
         <div className="w-full h-56 bg-[#7EB9F2] rounded-2xl border-[16px] border-solid border-[#C6DDF3] flex items-center justify-center shadow-sm">
@@ -25,7 +26,12 @@ const Note: React.FC<NoteProps> = ({ noteValue, quantity, onAdd, onRemove }) => 
            
             <div className="flex-[0.8] h-14 bg-white rounded-2xl flex items-center justify-between px-4 shadow-sm">
                 <button 
-                    onClick={onRemove}
+                    onClick={() => {
+                        if (quantity <= 0) return;
+
+                        onRemove && onRemove();
+                        onChangeQuantity && onChangeQuantity(quantity - 1);
+                    }}
                     className="text-2xl font-bold text-black hover:scale-125 transition-transform"
                 >
                     -
@@ -36,7 +42,11 @@ const Note: React.FC<NoteProps> = ({ noteValue, quantity, onAdd, onRemove }) => 
                 </span>
                 
                 <button 
-                    onClick={onAdd}
+                    onClick={() => {
+
+                        onAdd && onAdd();
+                        onChangeQuantity && onChangeQuantity(quantity + 1);
+                    }}
                     className="text-2xl font-bold text-black hover:scale-125 transition-transform"
                 >
                     +

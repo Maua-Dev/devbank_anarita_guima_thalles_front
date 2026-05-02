@@ -1,10 +1,15 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import Note from '../components/BankNote/banknote'
 import Navbar from '../components/Nav/navbar'
+import { deposit } from '../services/api'
+import { ApiContext } from '../context/ApiContext'
+import { useNavigate } from "react-router-dom"
 
 export default function Deposit() {
 
-    const [requestDaImagem] = useState({
+    const navigate = useNavigate();
+    const { apiUrl } = useContext(ApiContext);
+    const [requestDaImagem, setRequestDaImagem] = useState({
         "2": 0,
         "5": 0,
         "10": 0,
@@ -14,6 +19,37 @@ export default function Deposit() {
         "200": 0
     });
 
+    function calcularTotal() {
+    let total = 0;
+    Object.entries(requestDaImagem).forEach(([valor, qtd]) => {
+        total += Number(valor) * qtd;
+    });
+    return total;
+    }
+
+    function atualizarQuantidade(valor: string, quantidade: number) {
+    setRequestDaImagem(prev => ({
+        ...prev,
+        [valor]: quantidade
+    }));
+    }
+
+    async function handleDeposit() {
+    const total = calcularTotal();
+
+    if (total <= 0) {
+        alert("Selecione ao menos uma nota");
+        return;
+    }
+
+    try {
+        await deposit(apiUrl, total);
+        alert("Depósito realizado com sucesso!");
+        navigate("/");
+    } catch {
+        alert("Erro ao depositar");
+    }
+    }
 
 
     return (
@@ -33,10 +69,26 @@ export default function Deposit() {
                         key={valorDaNota} 
                         noteValue={valorDaNota} 
                         quantity={quantidade}
+                        onChangeQuantity={(qtd: number) => atualizarQuantidade(valorDaNota, qtd)}
                     />
                 ))}
             </div>
 
+            <div className="flex justify-center gap-10 mt-10">
+            <button
+                onClick={() => navigate("/")}
+                className="bg-blue-500 text-white px-10 py-3 rounded-md font-bold hover:scale-105 active:scale-95"
+            >
+                Voltar
+            </button>
+
+            <button
+                onClick={handleDeposit}
+                className="bg-blue-700 text-white px-10 py-3 rounded-md font-bold hover:scale-105 active:scale-95"
+            >
+                Depositar
+            </button>
+            </div>
  
 
         </div>
