@@ -1,10 +1,27 @@
-
-
+import { useState, useEffect, useContext } from 'react';
 import Navbar from '../components/Nav/navbar';
 import { useNavigate } from 'react-router-dom';
+import { ApiContext } from '../context/ApiContext';
+import { getHistory } from '../services/api';
+
+type Transaction = {
+  type: string;
+  value: number;
+  current_balance: string | number;
+  timestamp: number;
+};
 
 export default function Transactions() {
     const navigate = useNavigate();
+    const { apiUrl } = useContext(ApiContext);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+    useEffect(() => {
+        if (!apiUrl) return;
+        getHistory(apiUrl)
+            .then(data => setTransactions(data.all_transactions || []))
+            .catch(() => setTransactions([]));
+    }, [apiUrl]);
     return (
         <>
             <Navbar />
@@ -16,18 +33,22 @@ export default function Transactions() {
       </div>
       <div className="mt-4 space-y-4">
 
-        {[1, 2, 3].map((item) => (  
+        {transactions.length > 0 ? transactions.map((item, index) => (  
           <div
-            key={item}
+            key={index}
             className="bg-blue-300 rounded-md px-6 py-6 text-blue-700">
              <div className="font-semibold mb-2 text-black">
-                <p>-- DEPÓSITO -- </p>
-                <p>Valor:</p>
-                <p>Saldo:</p>
-                <p>Data:</p>
+                <p>-- {item.type.toUpperCase()} -- </p>
+                <p>Valor: R$ {item.value}</p>
+                <p>Saldo: R$ {item.current_balance}</p>
+                <p>Data: {new Date(item.timestamp).toLocaleString()}</p>
                 </div>
                 </div>
-        ))}
+        )) : (
+            <div className="bg-blue-300 rounded-md px-6 py-6 text-black font-semibold">
+                Nenhuma transação encontrada ou API não configurada.
+            </div>
+        )}
 
         <div className="flex justify-center gap-10 mt-10">
             <button
