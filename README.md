@@ -51,9 +51,6 @@ npm install
 2) Rodar o projeto
 npm run dev
 
-A aplicação estará em:
-
-http://localhost:5173
 
 🔗 Integração com API
 O sistema depende de uma API que possua os seguintes endpoints:
