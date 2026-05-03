@@ -22,6 +22,13 @@ export default function Transactions() {
             .then(data => setTransactions(data.all_transactions || []))
             .catch(() => setTransactions([]));
     }, [apiUrl]);
+
+    function traduzirTipo(tipo: string) {
+    if (tipo === "DEPOSIT") return "Depósito";
+    if (tipo === "WITHDRAW") return "Saque";
+    return tipo;
+    }
+
     return (
         <>
             <Navbar />
@@ -38,7 +45,7 @@ export default function Transactions() {
             key={index}
             className="bg-blue-300 rounded-md px-6 py-6 text-blue-700">
              <div className="font-semibold mb-2 text-black">
-                <p>-- {item.type.toUpperCase()} -- </p>
+                <p>-- {traduzirTipo(item.type.toUpperCase())} -- </p>
                 <p>Valor: R$ {item.value}</p>
                 <p>Saldo: R$ {item.current_balance}</p>
                 <p>Data: {new Date(item.timestamp).toLocaleString()}</p>
@@ -52,7 +59,7 @@ export default function Transactions() {
 
         <div className="flex justify-center gap-10 mt-10">
             <button
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/home")}
                 className="bg-blue-500 text-white px-10 py-3 rounded-md font-bold hover:scale-105 active:scale-95"
             >
                 Voltar

@@ -2,21 +2,33 @@ import Navbar from '../components/Nav/navbar';
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import { ApiContext } from '../context/ApiContext';
-import { getAccount } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { getAccount } from "../services/api";
+
 
 export default function Home() {
   const { apiUrl, setApiUrl } = useContext(ApiContext);
+  const navigate = useNavigate();
   const [balance, setBalance] = useState<number | null>(null);
 
   useEffect(() => {
     if (!apiUrl) {
-      setBalance(null);
+      navigate("/home");
       return;
+  }
+
+  async function fetchBalance() {
+    try {
+      const data = await getAccount(apiUrl);
+      setBalance(data.current_balance);
+    } catch {
+      alert("Ops!\nErro ao buscar saldo ou API não configurada.\nPor favor, insira um endpoint válido.");
     }
-    getAccount(apiUrl)
-      .then((data) => setBalance(data.current_balance))
-      .catch(() => setBalance(null));
-  }, [apiUrl]);
+  }
+
+  fetchBalance();
+  }, [apiUrl, navigate]);
+
   return (
     <>
       <Navbar />

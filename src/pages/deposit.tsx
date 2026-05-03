@@ -73,7 +73,7 @@ export default function Deposit() {
             }
 
             alert("Depósito realizado com sucesso!");
-            navigate("/");
+            navigate("/home");
         } catch {
             alert("Erro ao depositar");
         }
@@ -104,7 +104,7 @@ export default function Deposit() {
 
             <div className="flex justify-center gap-10 mt-10">
             <button
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/home")}
                 className="bg-blue-500 text-white px-10 py-3 rounded-md font-bold hover:scale-105 active:scale-95"
             >
                 Voltar
